@@ -1,0 +1,35 @@
+/* Custom CSS for Happy Youth Day */
+
+body {
+  background-color: #f1f1f1;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  font-size: 48px;
+  margin: 50px 0;
+}
+
+.quote {
+  color: #777;
+  font-size: 24px;
+  font-style: italic;
+  margin-bottom: 30px;
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer {
+  margin-top: 50px;
+  color: #777;
+  font-size: 16px;
+}
+

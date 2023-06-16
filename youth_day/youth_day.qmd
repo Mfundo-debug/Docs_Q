@@ -1,0 +1,60 @@
+---
+title: "Love is a Verb!"
+author: "Mfundo Monchwe"
+format: html
+editor: visual
+---
+
+```{=html}
+<link rel="stylesheet" href="style.css">
+```
+```{=html}
+
+<div class="content">
+  <h1>Happy Youth Day!</h1>
+<link rel="stylesheet" href="flower.css">
+  <div class="quote">
+    "The power of youth is the common wealth for the entire world." - Swami Vivekananda
+  </div>
+  
+  <p>
+    On this special day, we celebrate the courage, spirit, and potential of the youth. Happy Youth Day to all the young individuals making a difference in the world!
+  </p>
+  
+  <p>
+    Let us embrace the energy and creativity of the youth and work together to build a brighter future for everyone. May this day inspire us to empower the next generation and create a world filled with opportunities and equality.
+  </p>
+</div>
+
+<div class="footer">
+  <p>Created with love on Youth Day. Stay inspired!</p>
+</div>
+```
+```{=html}
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* Flower background */
+body {
+  background-image: url("flowers.jpg");
+  background-repeat: repeat;
+}
+
+/* Blinking effect */
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+h1 {
+  animation: blink 1s infinite;
+}
+</style>
+</head>
+<body>
+<h1>Love is a Verb!</h1>
+</body>
+</html>
+```

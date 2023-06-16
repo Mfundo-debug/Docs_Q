@@ -1,0 +1,23 @@
+/* flower.css */
+
+body {
+  background-image: url("flowers.jpg");
+  background-repeat: repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+.content {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+}
+
+.quote {
+  font-style: italic;
+}
+
+.footer {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 10px;
+}
