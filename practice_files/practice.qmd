@@ -1,0 +1,125 @@
+---
+title: "Introduction to R modelling"
+author: "Mfundo"
+format: html
+editor: visual
+---
+
+```{r}
+#| code-fold: true
+#| fig-cap: loading libs
+
+suppressMessages(suppressWarnings(library(ggplot2)))
+ggplot(mtcars, aes(factor(carb), fill=factor(cyl))) + geom_bar()
+```
+
+### data visualisation
+
+```{r}
+#| code-fold: true
+ggplot(mtcars, aes(x=mpg, y=hp))+
+  geom_point() +
+  xlab("Miles per Gallon")+
+  ylab("Horsepower")+
+  theme_minimal()
+```
+
+## Modelling
+
+```{r}
+#| code-fold: true
+model <- lm(mpg~ hp, data = mtcars)
+summary(model)
+```
+
+::: callout-note
+## Note
+
+Based on this model summary, the coefficient for **`hp`** is statistically significant (p-value \< 0.001), indicating that there is a significant relationship between horsepower and miles per gallon. The negative coefficient (-0.06823) suggests that as horsepower increases, the miles per gallon tends to decrease.
+:::
+
+```{r}
+#| code-fold: true
+par(mfrow = c(1,2))
+plot(model)
+```
+
+```{r}
+#| code-fold: true
+suppressMessages(suppressWarnings(library(performance)))
+suppressMessages(suppressWarnings(library(see)))
+suppressMessages(suppressWarnings(library(patchwork)))
+theme_set(theme_classic(base_size = 6))
+check_model(model)
+```
+
+```{r}
+#| code-fold: true
+check_outliers(model)
+```
+
+```{r}
+#| code-fold: true
+check_normality(model)
+```
+
+```{r}
+#| code-fold: true
+check_distribution(model)
+```
+
+```{r}
+#| code-fold: true
+model_1 <- lm(mpg ~hp + drat, data = mtcars)
+summary(model_1)
+```
+
+::: callout-tip
+## tip
+
+1.  Residuals: These are the differences between the observed **`mpg`** values and the predicted values from the model. The summary provides statistics such as the minimum, 1st quartile, median, 3rd quartile, and maximum values of the residuals.
+
+2.  Coefficients: The coefficients section presents the estimates, standard errors, t-values, and p-values for each predictor variable, as well as the intercept. Here's the interpretation of the coefficients:
+
+    -   Intercept: The estimated intercept is 10.789861, indicating the expected value of **`mpg`** when both **`hp`** and **`drat`** are zero. The p-value (0.042238) suggests that the intercept is statistically significant at a significance level of 0.05.
+
+    -   **`hp`**: The estimated coefficient is -0.051787, indicating that, on average, each unit increase in horsepower (**`hp`**) is associated with a decrease of 0.051787 in the predicted **`mpg`** value. The low p-value (5.17e-06) suggests that this coefficient is statistically significant.
+
+    -   **`drat`**: The estimated coefficient is 4.698158, suggesting that, on average, each unit increase in the rear axle ratio (**`drat`**) is associated with an increase of 4.698158 in the predicted **`mpg`** value. The low p-value (0.000467) indicates that this coefficient is statistically significant.
+
+3.  Residual standard error: This value represents the estimated standard deviation of the residuals, indicating the average distance between the observed **`mpg`** values and the predicted values from the model.
+
+4.  Multiple R-squared and Adjusted R-squared: These values measure the goodness of fit of the model. The multiple R-squared represents the proportion of variance in the response variable (**`mpg`**) explained by the predictor variables (**`hp`** and **`drat`**). The adjusted R-squared takes into account the number of predictors and the sample size. In this case, the multiple R-squared is 0.7412, indicating that approximately 74.12% of the variability in **`mpg`** can be explained by the predictor variables in the model.
+
+5.  F-statistic and p-value: The F-statistic tests the overall significance of the model, comparing the variance explained by the model to the residual variance. The low p-value (3.081e-09) indicates that the model as a whole is statistically significant, suggesting that at least one of the predictor variables is significantly associated with the **`mpg`** values.
+:::
+
+```{r}
+#| code-fold: true
+check_outliers(model_1)
+```
+
+```{r}
+#| code-fold: true
+check_collinearity(model_1)
+```
+
+```{r}
+#| code-fold: true
+check_distribution(model_1)
+```
+
+```{r}
+#| code-fold: true
+check_normality(model_1)
+```
+
+```{r}
+#| code-fold: true
+check_predictions(model_1)
+```
+
+```{r}
+#| code-fold: true
+check_posterior_predictions(model_1)
+```
