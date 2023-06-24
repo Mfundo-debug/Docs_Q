@@ -5,9 +5,8 @@ format: html
 editor: visual
 ---
 
-```{=html}
 <link rel="stylesheet" href="style.css">
-```
+
 ```{=html}
 
 <div class="content">
