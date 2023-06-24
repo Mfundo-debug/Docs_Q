@@ -1,0 +1,166 @@
+---
+title: "stock prediction"
+format: html
+editor: visual
+---
+
+#### Load necessary libraries
+
+```{r}
+#| code-fold: true
+library(prophet)
+library(lubridate)
+library(ggplot2)
+library(pacman)
+pacman::p_load(data.table, fixest, BatchGetSymbols, finreportr, ggplot2, lubridate)
+
+```
+
+::: callout-note
+## Set parameters
+:::
+
+```{r}
+first.date <- Sys.Date() -2500
+last.date <- Sys.Date()
+freq.data <- "daily"
+tickers <- c("BALKRISIND.NS")
+```
+
+::: callout-note
+## Collecting data
+
+simply taking daily data from 2014-07-01 to 2022-05-05
+:::
+
+### Getting Data
+
+```{r}
+#| code-fold: true
+stocks <- BatchGetSymbols(tickers=tickers,
+                          first.date = first.date,
+                          last.date = last.date,
+                          freq.data = freq.data,
+                          do.cache = FALSE,
+                          thresh.bad.data = 0)
+data <- stocks$df.tickers
+data<- na.omit(data)
+head(data)
+```
+
+```{r}
+str(data)
+```
+
+::: callout-important
+## dataset info
+
+the dataset contains total `1691` observations and `10` variables
+:::
+
+```{r}
+qplot(data$ref.date, data$price.close, data=data)
+```
+
+::: callout-caution
+## caution
+
+it is clearly evident that the data set is not stationary, so our next step is to make use of log transformation and convert it into stationary data
+:::
+
+#### Log transformation
+
+```{r}
+ds <- data$ref.date
+y <- log(data$price.close)
+df <- data.frame(ds,y)
+head(df)
+```
+
+#### Stock forecasting using prophet package
+
+```{r}
+m <- prophet(df)
+future <- make_future_dataframe(m, periods = 30)
+forecast <- predict(m, future)
+```
+
+```{r}
+f_d <- prophet(df, daily.seasonality = TRUE)
+future_d <- make_future_dataframe(f_d, periods = 30)
+forecast_1 <- predict(f_d, future_d)
+```
+
+### Model performance & Stock Prediction
+
+```{r}
+pred <- forecast$yhat[1:dim(df)[1]]
+actual <- m$history$y
+plot(actual, pred)
+```
+
+```{r}
+pred_1 <- forecast_1$yhat[1:dim(df)[1]]
+actual_1 <- f_d$history$y
+plot(actual_1, pred_1)
+```
+
+```{r}
+summary(lm(pred~actual))
+```
+
+::: callout-note
+## Model 1
+
+Adjusted R square is `98.34%` which means is a good model
+:::
+
+```{r}
+summary(lm(pred_1~actual_1))
+```
+
+::: callout-note
+## Model 2
+
+basically the same
+:::
+
+### Plot forecast
+
+```{r}
+prophet_plot_components(m,forecast)
+```
+
+### predictions in R
+
+```{r}
+plot(m, forecast)
+```
+
+::: callout-tip
+## interpretation
+
+plot is showing an increasing trend for the next 30 days.
+
+-   lets transform log values into original values based on exp function in R
+:::
+
+```{r}
+tail(forecast)
+forecast$yhat <- exp(forecast$yhat)
+forecast$trend <- exp(forecast$trend)
+forecast$trend_upper <- exp(forecast$trend_upper)
+forecast$trend_lower <- exp(forecast$trend_lower)
+```
+
+::: callout-note
+## predicted values
+
+above are the predicted values in yhat
+:::
+
+::: callout-warning
+## Disclaimer
+
+for any kind of investment consult your financial advisors, i do not take any take responsibility of your loss or any trading ideas
+:::
